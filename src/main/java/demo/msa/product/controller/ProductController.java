@@ -4,7 +4,9 @@ import demo.msa.product.model.Product;
 import demo.msa.product.request.ProductRequest;
 import demo.msa.product.response.ProductResponse;
 import demo.msa.product.service.ProductService;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +23,15 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @ApiOperation("根据产品ID查询产品")
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "产品ID", paramType = "path", dataType = "long", name = "id", required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "成功"),
+            @ApiResponse(code = 400, message = "错误请求"),
+            @ApiResponse(code = 600, message = "无效的产品ID")
+    })
     @GetMapping("/product/{id}")
     public Product getProductById(@PathVariable("id") long id) {
         return productService.getProductById(id);
